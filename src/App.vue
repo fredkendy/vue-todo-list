@@ -4,7 +4,7 @@
     <div class="w-full sm:w-1/2 lg:w-1/3 mx-auto">
 
       <pre>
-        {{ todos }}
+        {{ $store.state.todos }}
       </pre>
 
       <TodoSpinner />
@@ -32,18 +32,12 @@ export default {
       TodoSpinner, TodoForm, TodoItems, TodoEmpty 
     },
 
-    data() {
-      return {
-        todos: []
-      }
-    },
-
     created() {
       //Requisição ao json-server (database.json) com as todos
-      //então, atribuir o resultado ao array declarado no data() (poderia ter utilizado o async await)
+      //então, qdo o ajax terminar, comitar o resultado do ajax (response.data) -> vuex
       axios.get('http://localhost:3000/todos')
         .then((response) => {
-          this.todos = response.data
+          this.$store.commit('storeTodos', response.data)
         })
     }
 };

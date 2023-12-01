@@ -12,7 +12,13 @@ export default createStore({
     //payload é a mensagem em si
     storeTodos(state, payload) {
       state.todos = payload
-    }
+    },
+    //Salvando novo to-do
+    storeTodo(state, payload) {
+      //push add no final, unshift no começo
+      state.todos.push(payload)
+    },
+
   },
   //retorna uma promise
   actions: {
@@ -23,6 +29,12 @@ export default createStore({
         .then((response) => {
           commit('storeTodos', response.data)
         })
+    },
+
+    addTodo({ commit }, data) {
+      return axios.post('http://localhost:3000/todos', data).then((response) => {
+        commit('storeTodo', response.data)
+      })
     }
       
   },

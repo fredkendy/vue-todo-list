@@ -22,7 +22,7 @@ import TodoSpinner from './components/TodoSpinner.vue';
 import TodoForm from './components/TodoForm.vue';
 import TodoItems from './components/TodoItems.vue';
 import TodoEmpty from './components/TodoEmpty.vue';
-import axios from 'axios';
+//import axios from 'axios';
 
 export default {
     name: "App",
@@ -39,15 +39,11 @@ export default {
     created() {
       //antes do ajax
       this.loading = true
-      //Requisição ao json-server (database.json) com as todos
-      //então, qdo o ajax terminar, comitar o resultado do ajax (response.data) -> vuex
-      axios.get('http://localhost:3000/todos')
-        .then((response) => {
-          this.$store.commit('storeTodos', response.data)
-        })
-        .finally(() => {
-          this.loading = false
-        })
+
+      this.$store.dispatch('getTodos').finally(() => {
+        this.loading = false
+      })
+      
     }
 };
 </script>

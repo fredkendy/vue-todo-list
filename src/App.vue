@@ -3,17 +3,15 @@
   <div class="px-3 py-10 md:px-10">
     <div class="w-full sm:w-1/2 lg:w-1/3 mx-auto">
 
-      <pre>
-        {{ $store.state.todos }}
-      </pre>
+      <TodoSpinner v-if="loading" />
 
-      <TodoSpinner />
-
-      <TodoForm />
+      <template v-else>
+        <TodoForm />
       
-      <TodoItems />
+        <TodoItems />
 
-      <TodoEmpty />
+        <TodoEmpty />
+      </template>
       
     </div>
   </div>
@@ -32,12 +30,23 @@ export default {
       TodoSpinner, TodoForm, TodoItems, TodoEmpty 
     },
 
+    data() {
+      return {
+        loading: false
+      }
+    },
+
     created() {
+      //antes do ajax
+      this.loading = true
       //Requisição ao json-server (database.json) com as todos
       //então, qdo o ajax terminar, comitar o resultado do ajax (response.data) -> vuex
       axios.get('http://localhost:3000/todos')
         .then((response) => {
           this.$store.commit('storeTodos', response.data)
+        })
+        .finally(() => {
+          this.loading = false
         })
     }
 };

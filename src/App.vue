@@ -8,9 +8,9 @@
       <template v-else>
         <TodoForm />
       
-        <TodoItems />
+        <TodoItems v-if="$store.state.todos.length > 0" />
 
-        <TodoEmpty />
+        <TodoEmpty v-else />
       </template>
       
     </div>

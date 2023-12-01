@@ -15,8 +15,14 @@ export default createStore({
     },
     //Salvando novo to-do
     storeTodo(state, payload) {
-      //push add no final, unshift no começo
-      state.todos.push(payload)
+      //checando se o objeto já existe
+      const index = state.todos.findIndex(todo => todo.id === payload.id)
+      if (index >= 0) {
+        state.todos.splice(index, 1, payload)
+      } else {
+        //push add no final, unshift no começo
+        state.todos.push(payload)
+      }
     },
 
   },
@@ -39,8 +45,10 @@ export default createStore({
 
     //na segunda parte do parametro, precisa usar o destruct do JS, pois as actions só aceitam 2 parâmetros
     //e precisamos do id para realizar a atualização, bem como o payload (data)
-    updateTodo(context , { id, data }) {
-      return axios.put(`http://localhost:3000/todos/${id}`, data)
+    updateTodo({ commit } , { id, data }) {
+      return axios.put(`http://localhost:3000/todos/${id}`, data).then((response) => {
+        commit('storeTodo', response.data)
+      })
     }
       
   },

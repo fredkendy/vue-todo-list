@@ -35,6 +35,12 @@ export default createStore({
       return axios.post('http://localhost:3000/todos', data).then((response) => {
         commit('storeTodo', response.data)
       })
+    },
+
+    //na segunda parte do parametro, precisa usar o destruct do JS, pois as actions só aceitam 2 parâmetros
+    //e precisamos do id para realizar a atualização, bem como o payload (data)
+    updateTodo(context , { id, data }) {
+      return axios.put(`http://localhost:3000/todos/${id}`, data)
     }
       
   },
